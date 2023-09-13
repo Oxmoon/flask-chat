@@ -1,7 +1,7 @@
 from datetime import datetime
 from . import db
 from app import login
-from sqlalchemy import func
+from hashlib import md5
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -40,9 +40,15 @@ class User(UserMixin, db.Model):
                             secondary=user_room,
                             backref=db.backref('user', lazy='dynamic'),
                             lazy='dynamic')
+    about_me = db.Column(db.String(140))
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
     def __init__(self, email, username, password_hash):
         self.email = email
