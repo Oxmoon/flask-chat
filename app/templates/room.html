@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ current_room.name }}{% endblock %}
+{% block content %}
+<div class="h1 p-3" align="center">{{ current_room.name }}</div>
+<div class="border border-dark-subtle border-bottom-0 rounded">
+    <div id="messages" style="overflow-y: auto; height: 80vh; width: 100%;">
+        <ul class="list-group">
+            {% for message in messages %}
+            {% if message.user_id == current_user %}
+            <li class="list-group-item d-flex justify-content-between align-items-start p-2 w-100" style="background-color: rgb(227, 227, 227);">
+                {% include '_message.html' %}
+            </li>
+            {% else %}
+            <li class="list-group-item d-flex justify-content-between align-items-start p-2 w-100 bg-light">
+                {% include '_message.html' %}
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="form-group d-flex">
+        <input
+        type="message"
+        class="form-control p-2 flex-grow-1"
+        id="message"
+        name="message"
+        placeholder="Enter message"
+        onsubmit="sendmessage()"
+        />
+        <button type="submit" class="btn btn-primary" onclick="sendMessage()">Send</button>
+    </div>
+    <!--
+        <form method="POST">
+        <div class="form-group d-flex">
+        <input
+        type="message"
+        class="form-control p-2 flex-grow-1"
+        id="message"
+        name="message"
+        placeholder="Enter message"
+        onsubmit="sendMessage()"
+        />
+        <button type="submit" class="btn btn-primary" onclick="sendMessage()">Send</button>
+        </div>
+        </form>
+    -->
+</div>
+{% endblock %}
+
