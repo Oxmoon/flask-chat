@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
-{% block content %}
+{% block app_content %}
 <div class="h3 p-3" align="center">Rooms</div>
 <div class="list-group" id="rooms">
     {% for room in rooms %}
@@ -10,7 +10,7 @@
     {% endfor %}
 </div>
 <br />
-<form action="/create_room">
+<form action="{{ url_for('main.create_room') }}">
     <div align="center">
         <button class="btn btn-primary">Create New Room</button>
     </div>
