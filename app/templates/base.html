@@ -28,28 +28,33 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">Flask Chat</a>
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">Flask Chat</a>
                 <button
                     class="navbar-toggler"
                     type="button"
                     data-toggle="collapse"
-                    data-target="#navbar"
+                    data-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
                     >
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbar">
+                <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="navbar-nav">
                         {% if current_user.is_anonymous %}
-                        <a class="nav-item nav-link" id="login" href="/login">Login</a>
-                        <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+                        <a class="nav-item nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                        <a class="nav-item nav-link" href="{{ url_for('auth.sign_up') }}">Sign Up</a>
                         {% else %}
-                        <a class="nav-item nav-link" id="home" href="/">Home</a>
-                        <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+                        <a class="nav-item nav-link" href="{{ url_for('main.index') }}">Home</a>
+                        <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                        <a class="nav-item nav-link" href="{{ url_for('main.edit_profile')}}">Edit Profile</a>
                         {% endif %}
                     </div>
                 </div>
             </div>
         </nav>
+
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
@@ -67,23 +72,26 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        {% endif %} {% endfor %} {% endif %} {% endwith %}
+        {% endif %} {% endfor %}
+        {% endif %}
+        {% endwith %}
 
         <div class="container">{% block content %} {% endblock %}</div>
 
-        <script
-            src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        {{ moment.include_moment() }}
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"
                 ></script>
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            integrity="sha384-apnbgh9b+y1qktv3rn7w3mgpxhu9k/scqsap7huibx39j7fakfpskvxusvfa0b4q"
             crossorigin="anonymous"
                 ></script>
         <script
             src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            integrity="sha384-jzr6spejh4u02d8jot6vlehfe/jqgirrsqqxsffwpi1mquvdayjuar5+76pvcmyl"
             crossorigin="anonymous"
                 ></script>
         <!-- <script src="{{ url_for('static', filename='scripts/index.js')}}"></script> -->

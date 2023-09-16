@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Create Room{% endblock %}
+{% block content %}
+<div class="h3 p-3" align="center">Create Room</div>
+<form action="" method="post">
+    <div class="form-group">
+        {{ form.hidden_tag() }}
+        <p "form-group">
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control", placeholder="Create a room name") }}<br>
+        {% for error in form.name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>{{ form.submit(class="btn btn-primary") }}</p>
+    </div>
+</form>
+{% endblock %}

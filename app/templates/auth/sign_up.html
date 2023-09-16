@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<div class="h3 p-3" align="center">Sign Up</div>
+<form action="" method="post">
+    <div class="form-group">
+        {{ form.hidden_tag() }}
+        <p>
+        {{ form.email.label }}<br>
+        {{ form.email(class="form-control", placeholder="Enter an email") }}<br>
+        {% for error in form.email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>
+        {{ form.username.label }}<br>
+        {{ form.username(class="form-control", placeholder="Create a username") }}<br>
+        {% for error in form.username.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>
+        {{ form.password.label }}<br>
+        {{ form.password(class="form-control", placeholder="Create a password") }}<br>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>
+        {{ form.password2.label }}<br>
+        {{ form.password2(class="form-control", placeholder="Confirm your password") }}<br>
+        {% for error in form.password2.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>{{ form.submit(class="btn btn-primary") }}</p>
+    </div>
+</form>
+
+<figure class="text-center">
+    <p>Already have an account? <a href="/login">Login</a></p>
+</figure>
+{% endblock %}
