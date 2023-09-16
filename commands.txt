@@ -1,9 +1,0 @@
-SELECT
-message.msg as message,
-message.timestamp as timestamp,
-user.username as sender
-FROM room
-    LEFT JOIN user_room on room.id = user_room.room_id
-    LEFT JOIN message on user_room.room_id = message.room_id
-    LEFT JOIN user on message.user_id = user.id
-WHERE user_room.room_id = 1;
