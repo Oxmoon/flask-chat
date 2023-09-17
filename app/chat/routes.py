@@ -13,7 +13,11 @@ from flask_socketio import join_room, leave_room, send
 def room(name):
     form = ChatForm()
     room = Room.query.filter_by(name=name).first_or_404()
-    return render_template('chat/room.html', room=room, form=form)
+    return render_template('chat/room.html',
+                           username=current_user.username,
+                           room=room,
+                           roomname=room.name,
+                           form=form)
 
 
 @socketio.on('message')
