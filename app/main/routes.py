@@ -15,13 +15,6 @@ def index():
     return render_template('index.html', rooms=rooms)
 
 
-@bp.route('/index/<name>')
-@login_required
-def room(name):
-    room = Room.query.filter_by(name=name).first_or_404()
-    return render_template('room.html', room=room)
-
-
 @bp.route('/user/<username>')
 @login_required
 def user(username):
