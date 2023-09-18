@@ -56,16 +56,12 @@
 </div>
 {% endblock %}
 
-{% block styles %}
-{{ super() }}
-{% endblock %}
+{% block styles %} {% endblock %}
 
 {% block scripts %}
-
-{{ super() }}
-{{ moment.include_moment() }}
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    {{ super() }}
+    {{ moment.include_moment() }}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"
                 ></script>
@@ -79,5 +75,4 @@
     integrity="sha384-jzr6spejh4u02d8jot6vlehfe/jqgirrsqqxsffwpi1mquvdayjuar5+76pvcmyl"
     crossorigin="anonymous"
         ></script>
-
 {% endblock %}

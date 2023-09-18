@@ -23,6 +23,11 @@ class Message(db.Model):
     def __repr__(self):
         return '<Message from %r in %r>' % self.user_id % self.room_id
 
+    def __init__(self, msg, user_id, room_id):
+        self.msg = msg
+        self.user_id = user_id
+        self.room_id = room_id
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
