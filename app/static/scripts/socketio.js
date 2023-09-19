@@ -1,39 +1,52 @@
 document.addEventListener('DOMContentLoaded', () => {
     var socket = io();
 
-    const createMessage = (message, name, time) => {
-        const msg = document.createElement('p');
+    const createMessage = (message, name, time, avatar_url) => {
+        const list_item = document.createElement('li');
+        const msg = document.createElement('div');
+        const msgHeader = document.createElement('div');
+        const strong = document.createElement('strong');
         const span_username = document.createElement('span');
         const span_message = document.createElement('span');
         const span_timestamp = document.createElement('span');
+        const img_avatar = document.createElement('img');
         var localtime = moment.utc(time).local();
         var calendartime = moment(localtime).calendar();
-        const br = document.createElement('br')
 
         if(name == username) {
-            msg.setAttribute("class", "own-msg");
+            msg.setAttribute("class", "own-msg p-2 w-100");
             span_username.setAttribute("class", "own-username");
         } else {
-            msg.setAttribute("class", "others-msg");
+            msg.setAttribute("class", "others-msg p-2 w-100");
             span_username.setAttribute("class", "other-username");
         }
-        span_username.innerText = name;
+        
+        list_item.setAttribute("class", "list-group-item d-flex justify-content-between align-items-start p-2 w-100")
+
+        msgHeader.setAttribute("class", "fw-bold d-flex justify-content-between p-2 w-100");
+
+        img_avatar.setAttribute("src", avatar_url);
+
+        strong.innerHTML = name;
 
         span_timestamp.setAttribute("class", "timestamp");
         span_timestamp.innerText = calendartime;
 
-        span_message.innerText = message;
-        msg.innerHTML += span_username.outerHTML +
-            br.outerHTML +
-            span_message.outerHTML +
-            br.outerHTML +
-            span_timestamp.outerHTML;
+        msgHeader.innerHTML = img_avatar.outerHTML + strong.outerHTML + span_timestamp.outerHTML;
 
-        document.querySelector('#messages').append(msg);
+        span_message.innerText = message;
+
+        msg.innerHTML += msgHeader.outerHTML +
+            span_message.outerHTML;
+
+        list_item.innerHTML += msg.outerHTML;
+
+        document.querySelector('#user_messages_list').append(list_item);
+        console.log(avatar_url)
     };
 
     socket.on('display_message', data => {
-        createMessage(data.msg, data.username, data.timestamp);
+        createMessage(data.msg, data.username, data.timestamp, avatar_url);
     });
 
     document.querySelector('#send_message').onclick = () => {
