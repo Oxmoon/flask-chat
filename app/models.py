@@ -77,6 +77,9 @@ class User(UserMixin, db.Model):
             (user_room.c.room_id == Room.id)).filter(user_room.c.user_id == self.id)
         return joined
 
+    def get_profile(self):
+        return '/user/' + self.username
+
     @login.user_loader
     def load_user(id):
         return User.query.get(int(id))

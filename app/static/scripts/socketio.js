@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const msg = document.createElement('div');
         const msgHeader = document.createElement('div');
         const strong = document.createElement('strong');
-        const span_username = document.createElement('span');
+        const span_username = document.createElement('a');
         const span_message = document.createElement('span');
         const span_timestamp = document.createElement('span');
         const img_avatar = document.createElement('img');
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(name == username) {
             msg.setAttribute("class", "own-msg p-2 w-100");
             span_username.setAttribute("class", "own-username");
+            span_username.setAttribute("href", ('/user/' +name));
         } else {
             msg.setAttribute("class", "others-msg p-2 w-100");
             span_username.setAttribute("class", "other-username");
