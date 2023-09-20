@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     var socket = io();
-    let window = document.getElementById('user_messages_list');
-    window.scrollIntoView(false);
+    let message_list = document.getElementById('user_messages_list');
+    message_list.scrollIntoView(false);
+    let client_window = document.getElementById('messages_div')
 
     const createMessage = (message, name, time, avatar_url) => {
         const list_item = document.createElement('li');
@@ -24,8 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
             list_item.setAttribute("class", "other_message");
         }
         
-        // list_item.setAttribute("class", "list-group-item d-flex justify-content-between align-items-start p-2 w-100")
-
         msgHeader.setAttribute("class", "fw-bold d-flex justify-content-between p-2 w-100");
 
         img_avatar.setAttribute("src", avatar_url);
@@ -48,12 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
         list_item.innerHTML += msg.outerHTML;
 
         // document.querySelector('#user_messages_list').append(list_item);
-        window.append(list_item);
+        message_list.append(list_item);
     };
 
     socket.on('display_message', data => {
         createMessage(data.msg, data.username, data.timestamp, avatar_url);
-        window.scrollIntoView(false);
+            console.log(client_window.scrollTop, client_window.clientHeight, message_list.scrollHeight);
+        if (client_window.scrollTop + (client_window.clientHeight * 1.5) >= message_list.scrollHeight) {
+            message_list.scrollIntoView(false);
+        }
     });
 
     document.querySelector('#send_message').onclick = () => {
