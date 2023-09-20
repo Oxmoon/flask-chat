@@ -12,7 +12,7 @@ from flask_socketio import join_room, leave_room, send, emit
 @login_required
 def room(name):
     room = Room.query.filter_by(name=name).first_or_404()
-    avatar_url = current_user.avatar(0)
+    avatar_url = current_user.avatar(50)
     return render_template('chat/room.html',
                            user=current_user,
                            username=current_user.username,

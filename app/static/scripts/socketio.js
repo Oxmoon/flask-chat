@@ -16,20 +16,20 @@ document.addEventListener('DOMContentLoaded', () => {
         var calendartime = moment(localtime).calendar();
 
         if(name == username) {
-            msg.setAttribute("class", "own-msg p-2 w-100");
-            span_username.setAttribute("class", "own-username");
+            msg.setAttribute("class", "p-2 w-100");
             span_username.setAttribute("href", ('/user/' + name));
+            list_item.setAttribute("class", "own_message list-group-item d-flex justify-content-between align-items-start p-2 w-100");
         } else {
-            msg.setAttribute("class", "others-msg p-2 w-100");
-            span_username.setAttribute("class", "other-username");
+            msg.setAttribute("class", "p-2 w-100 list-group-item d-flex justify-content-between align-items-start p-2 w-100");
+            list_item.setAttribute("class", "other_message");
         }
         
-        list_item.setAttribute("class", "list-group-item d-flex justify-content-between align-items-start p-2 w-100")
-        list_item.setAttribute("style", "word-wrap: break-word;");
+        // list_item.setAttribute("class", "list-group-item d-flex justify-content-between align-items-start p-2 w-100")
 
         msgHeader.setAttribute("class", "fw-bold d-flex justify-content-between p-2 w-100");
 
-        // img_avatar.setAttribute("src", avatar_url);
+        img_avatar.setAttribute("src", avatar_url);
+        img_avatar.setAttribute("class", "avatar");
 
         strong.innerText = name;
         span_username.innerHTML += strong.outerHTML;

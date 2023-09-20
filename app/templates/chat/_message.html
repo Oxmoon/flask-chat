@@ -1,7 +1,7 @@
 <div class="p-2 w-100">
     <div class="fw-bold d-flex justify-content-between p-2 w-100">
         <img src="{{ user.avatar(50) }}">
-        <a href={{ url_for('main.user', username=user.username) }}><strong>{{ user.username }}</a></span>
+        <a href={{ url_for('main.user', username=user.username) }}><strong>{{ user.username }}</strong></a></span>
         <span class="align-items-center">
             <span>{{ moment(message.timestamp).calendar() }}</span>
             <!-- <button type="button" class="close" onClick="deleteMessage({{ message.id }})"> -->
