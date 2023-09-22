@@ -2,7 +2,7 @@
 {% block title %}{{ user.username }}'s Profile{% endblock %}
 {% block app_content %}
 <div class="h3 p-3">User: {{ user.username }}</div>
-<img src="{{ user.avatar(128) }}">
+<img src="{{ user.get_avatar(128) }}">
 <div class="p-3">
     {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
     {% if user.last_seen %}
