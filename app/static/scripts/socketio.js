@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let message_list = document.getElementById('user_messages_list');
     message_list.scrollIntoView(false);
     let client_window = document.getElementById('messages_div')
+    joinRoom(room_id);
 
     const createMessage = (message, name, time, avatar_url) => {
         const list_item = document.createElement('li');
@@ -21,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
             span_username.setAttribute("href", ('/user/' + name));
             list_item.setAttribute("class", "own_message list-group-item d-flex justify-content-between align-items-start p-2 w-100");
         } else {
-            msg.setAttribute("class", "p-2 w-100 list-group-item d-flex justify-content-between align-items-start p-2 w-100");
-            list_item.setAttribute("class", "other_message");
+            msg.setAttribute("class", "p-2 w-100");
+            list_item.setAttribute("class", "other_message list-group-item d-flex justify-content-between align-items-start p-2 w-100");
         }
         
         msgHeader.setAttribute("class", "fw-bold d-flex justify-content-between p-2 w-100");
@@ -50,12 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
         message_list.append(list_item);
     };
 
-    socket.on('display_message', data => {
-        createMessage(data.msg, data.username, data.timestamp, avatar_url);
-            console.log(client_window.scrollTop, client_window.clientHeight, message_list.scrollHeight);
+    socket.on('message', data => {
+        createMessage(data.msg, data.username, data.timestamp, data.avatar_url);
         if (client_window.scrollTop + (client_window.clientHeight * 1.5) >= message_list.scrollHeight) {
             message_list.scrollIntoView(false);
         }
+        console.log("recieved message");
     });
 
     document.querySelector('#send_message').onclick = () => {
@@ -63,8 +64,24 @@ document.addEventListener('DOMContentLoaded', () => {
             'msg': document.querySelector('#user_message').value,
             'username': username,
             'user_id': user_id,
-            'room_id': room_id});
+            'room_id': room_id,
+            'avatar_url': avatar_url});
         document.querySelector('#user_message').value = '';
     };
 
+    function joinRoom(room_id) {
+        socket.emit('join', {'room_id': room_id});
+        document.querySelector('#user_message').innerHTML = '';
+        document.querySelector("#user_message").focus();
+    }
+
+    // function leaveRoom(room_id) {
+        // socket.emit('leave', {'room_id': room_id});
+    // }
+
+    // window.addEventListener('beforeunload', function (e) {
+        // e.preventDefault();
+        // leaveRoom(room_id);
+        // e.returnValue = '';
+    // });
 });

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired, ValidationError, Length
 from app.models import User, Room
 
@@ -22,6 +22,7 @@ class EditProfileForm(FlaskForm):
 
 class CreateRoomForm(FlaskForm):
     name = StringField('Room name', validators=[DataRequired()])
+    private = BooleanField('Private Room')
     submit = SubmitField('Submit')
 
     def validate_name(self, name):

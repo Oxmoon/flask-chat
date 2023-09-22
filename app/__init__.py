@@ -1,7 +1,8 @@
 from flask import Flask
 from config import Config
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, exc
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_utils import database_exists
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_moment import Moment
@@ -26,7 +27,7 @@ moment = Moment()
 login = LoginManager()
 login.login_view = 'auth.login'
 bootstrap = Bootstrap()
-socketio = SocketIO()
+socketio = SocketIO(manage_session=False)
 
 
 def create_app(config_class=Config):
@@ -51,6 +52,20 @@ def create_app(config_class=Config):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+
+    if database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
+        print("app.db already exists")
+    else:
+        print("app.db does not exist, will create ")
+        with app.app_context():
+            try:
+                db.create_all()
+            except exc.SQLAlchemyError as sqlalchemyerror:
+                print("got the following SQLAlchemyError: " + str(sqlalchemyerror))
+            except Exception as exception:
+                print("got the following Exception: " + str(exception))
+            finally:
+                print("db.create_all() in __init__.py was successfull - no exceptions were raised")
 
     if not app.debug and not app.testing:
         if not os.path.exists('logs'):

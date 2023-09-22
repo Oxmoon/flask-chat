@@ -1,6 +1,6 @@
 from app import db
 from app.auth import bp
-from app.models import User
+from app.models import User, Room
 from app.auth.forms import SignupForm, LoginForm
 from werkzeug.urls import url_parse
 from flask import render_template, flash, redirect, url_for, request
@@ -44,7 +44,9 @@ def sign_up():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
+        general_room = Room.query.filter_by(name="General").first()
         db.session.add(user)
+        user.join(general_room)
         db.session.commit()
         flash('Thank you for signing up!')
         return redirect(url_for('auth.login'))

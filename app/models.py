@@ -1,7 +1,6 @@
 from datetime import datetime
 from hashlib import md5
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import current_app
 from flask_login import UserMixin
 from app import login, db
 
@@ -17,16 +16,24 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     msg = db.Column(db.String(1000))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    username = db.Column(db.String(150))
+    avatar = db.Column(db.String(150))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
 
     def __repr__(self):
         return '<Message from %r in %r>' % self.user_id % self.room_id
 
-    def __init__(self, msg, user_id, room_id):
+    def __init__(self, msg, user_id, room_id, username, avatar):
         self.msg = msg
         self.user_id = user_id
         self.room_id = room_id
+        self.username = username
+        self.avatar = self.get_avatar(user_id)
+
+    def get_avatar(self, user_id):
+        user = User.query.filter_by(id=user_id).first()
+        return user.get_avatar(50)
 
 
 class User(UserMixin, db.Model):
@@ -46,7 +53,7 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
-    def avatar(self, size):
+    def get_avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
@@ -89,10 +96,12 @@ class Room(db.Model):
     __tablename__ = 'room'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    private = db.Column(db.Boolean, nullable=False)
     messages = db.relationship('Message', backref='room', lazy='dynamic')
 
     def __repr__(self):
         return '<Room %r>' % self.name
 
-    def __init__(self, name):
+    def __init__(self, name, private):
         self.name = name
+        self.private = private

@@ -1,12 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block app_content %}
-<div class="h3 p-3" align="center">Rooms</div>
 <div class="list-group" id="rooms">
     {% for room in rooms %}
+    {% if not room.private %}
+    <div class="h3 p-3" align="center">Public Rooms</div>
     <a class="list-group-item list-group-item-action"
         id="room"
         href="{{ url_for('chat.room', name=room.name) }}">{{ room.name }}</a>
+    {% else %}
+    <div class="h3 p-3" align="center">Private Rooms</div>
+    <a class="list-group-item list-group-item-action"
+        id="room"
+        href="{{ url_for('chat.room', name=room.name) }}">{{ room.name }}</a>
+    {% endif %}
     {% endfor %}
 </div>
 <br />
