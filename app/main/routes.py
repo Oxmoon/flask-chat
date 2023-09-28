@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_required
 from datetime import datetime
 from app import db
-from app.main.forms import EditProfileForm, CreateRoomForm
+from app.main.forms import EditProfileForm, CreateRoomForm, InviteToRoomForm
 from app.models import User, Room
 from app.main import bp
 
@@ -58,3 +58,17 @@ def create_room():
         flash('Room created!')
         return redirect(url_for('main.index'))
     return render_template('create_room.html', title='Create a Room', form=form)
+
+
+@bp.route('/invite_room', methods=['GET', 'POST'])
+@login_required
+def invite_room():
+    form = InviteToRoomForm(current_user.username)
+    if form.validate_on_submit():
+        room = Room.query.filter_by(name=form.room_name.data).first_or_404()
+        user = User.query.filter_by(username=form.username.data).first_or_404()
+        user.join(room)
+        db.session.commit()
+        flash('Invited ' + form.username.data + ' to ' + form.room_name.data)
+        return redirect(url_for('main.index'))
+    return render_template('invite_room.html', title='Invite to Room', form=form)
