@@ -87,6 +87,16 @@ class User(UserMixin, db.Model):
     def get_profile(self):
         return '/user/' + self.username
 
+    def invitable_rooms(self, other_user):
+        other_user_rooms = Room.query.join(
+            user_room,
+            (user_room.c.room_id == Room.id)).filter(user_room.c.user_id == other_user.id)
+        own_user_rooms = Room.query.join(
+            user_room,
+            (user_room.c.room_id == Room.id)).filter(user_room.c.user_id == self.id)
+        result = own_user_rooms.except_(other_user_rooms)
+        return result
+
     @login.user_loader
     def load_user(id):
         return User.query.get(int(id))

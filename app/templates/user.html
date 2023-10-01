@@ -10,8 +10,8 @@
     {% endif %}
 </div>
 {% if user == current_user %}
-<p><a href="{{ url_for('main.edit_profile') }}">Edit your profile</a></p>
+<p><a href={{ url_for('main.edit_profile') }}>Edit your profile</a></p>
 {% else %}
-<p><a href="{{ url_for('main.invite_room') }}">Invite to your rooms</a></p>
+<p><a href={{ url_for('main.invite_room', username=user.username) }}>Invite to your rooms</a></p>
 {% endif %}
 {% endblock %}

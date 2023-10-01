@@ -3,9 +3,14 @@
 {% block title %}Invite {{ current_user.username }}{% endblock %}
 {% block app_content %}
 <div class="h3 p-3">Invite to Your Rooms</div>
-<div class="row">
-    <div class="col-md-4">
-        {{ wtf.quick_form(form) }}
-    </div>
-</div>
+<div class="h3 p-3" align="center">Your Rooms</div>
+    <form action="" method="post" novalidate>
+        <div class="list-group">
+            {% for room in rooms %}
+            <button name="room_button"
+            class="list-group-item list-group-item-action"
+            value={{ room.id }}>{{ room.name }}</button>
+            {% endfor %}
+        </div>
+    </form>
 {% endblock %}
