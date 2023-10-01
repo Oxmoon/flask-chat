@@ -4,3 +4,4 @@ flask_session/
 .sql/
 .env
 logs/
+/command.txt
