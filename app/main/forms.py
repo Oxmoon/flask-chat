@@ -29,24 +29,3 @@ class CreateRoomForm(FlaskForm):
         room = Room.query.filter_by(name=self.name.data).first()
         if room is not None:
             raise ValidationError('Room name is already taken.')
-
-
-class InviteToRoomForm(FlaskForm):
-    room_name = StringField('Room name', validators=[DataRequired()])
-    username = StringField('Username', validators=[DataRequired()])
-    submit = SubmitField('Submit')
-
-    def __init__(self, user, *args, **kwargs):
-        super(InviteToRoomForm, self).__init__(*args, **kwargs)
-        self.user = user
-
-    def validate_name(self, username):
-        user = User.query.filter_by(username=self.username.data).first()
-        if user is None:
-            raise ValidationError('This user does not exist.')
-
-    def validate_room(self, user):
-        this_user = User.query.filter_by(username=self.user).first()
-        room = Room.query.filter_by(name=self.room_name.data).first()
-        if room not in this_user.joined_rooms():
-            raise ValidationError('You have not joined this room.')
