@@ -54,6 +54,7 @@ def create_app(config_name):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
+    print('database is ' + os.environ['SQLALCHEMY_DATABASE_URI'])
     if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
         print("app.db already exists")
     else:

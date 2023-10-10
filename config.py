@@ -33,15 +33,6 @@ class ProductionConfig(Config):
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
 
-config = {
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-
-    'default': DevelopmentConfig
-}
-
-
 class DockerConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
@@ -53,3 +44,13 @@ class DockerConfig(ProductionConfig):
         file_handler = StreamHandler()
         file_handler.setLevel(logging.INFO)
         app.logger.addHandler(file_handler)
+
+
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'docker': DockerConfig,
+
+    'default': DevelopmentConfig
+}
