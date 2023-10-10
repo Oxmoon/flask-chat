@@ -8,4 +8,5 @@ logs/
 .flaskenv
 .env
 Dockerfile
-docker-compose.yml
+docker-compose.yaml
+compose-dev.yaml
