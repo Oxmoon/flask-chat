@@ -4,25 +4,33 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login, db
 
+from sqlalchemy import String, ForeignKey, Boolean, func
+from sqlalchemy.orm import Mapped, Table, Column, mapped_column, relationship
+from db import Model
 
-user_room = db.Table('user_room',
-                     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                     db.Column('room_id', db.Integer, db.ForeignKey('room.id'))
-                     )
+
+UserRoom = Table(
+    'UserRoom',
+    Model.metadata,
+    Column('user_id', ForeignKey('user.id'), primary_key=True, nullable=False),
+    Column('room_id', ForeignKey('room.id'), primary_key=True, nullable=False)
+)
 
 
 class Message(db.Model):
     __tablename__ = 'message'
-    id = db.Column(db.Integer, primary_key=True)
-    msg = db.Column(db.String(1000))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    username = db.Column(db.String(150))
-    avatar = db.Column(db.String(150))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
+    id: Mapped[int] = mapped_column(primary_key=True)
+    msg: Mapped[str] = mapped_column(db.String(1000))
+    timestamp: Mapped[datetime] = mapped_column(insert_default=func.now())
+    username: Mapped[str] = mapped_column(String(150))
+    avatar: Mapped[str] = mapped_column(String(150))
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey('user.id'))
+    room_id: Mapped[int] = mapped_column(
+        ForeignKey('room.id'))
 
     def __repr__(self):
-        return '<Message from %r in %r>' % self.user_id % self.room_id
+        return f'Message({self.username}, "{self.msg}")'
 
     def __init__(self, msg, user_id, room_id, username, avatar):
         self.msg = msg
@@ -38,20 +46,20 @@ class Message(db.Model):
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(150), unique=True)
-    username = db.Column(db.String(150), unique=True)
-    password_hash = db.Column(db.String(150))
-    messages = db.relationship('Message', backref='user', lazy='dynamic')
-    rooms = db.relationship('Room',
-                            secondary=user_room,
-                            backref=db.backref('user', lazy='dynamic'),
-                            lazy='dynamic')
-    about_me = db.Column(db.String(140))
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(String(150), unique=True)
+    username: Mapped[str] = mapped_column(String(150), index=True, unique=True)
+    password_hash: Mapped[str] = mapped_column(String(150))
+    messages: Mapped['Message'] = relationship(
+        backpopulates='user', lazy='dynamic')
+    rooms: Mapped[list['Room']] = relationship(
+        secondary=UserRoom,
+        back_populates='users')
+    about_me: Mapped[str] = mapped_column(String(140))
+    last_seen: Mapped[str] = mapped_column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return f'User({self.username})'
 
     def get_avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
@@ -76,12 +84,12 @@ class User(UserMixin, db.Model):
             self.rooms.remove(room)
 
     def has_joined(self, room):
-        return self.rooms.filter(user_room.c.room_id == room.id).count() > 0
+        return self.rooms.where(UserRoom.room_id == self.room.id).count() > 0
 
     def joined_rooms(self):
         joined = Room.query.join(
-            user_room,
-            (user_room.c.room_id == Room.id)).filter(user_room.c.user_id == self.id)
+            UserRoom,
+            (UserRoom.c.room_id == Room.id)).filter(UserRoom.c.user_id == self.id)
         return joined
 
     def get_profile(self):
@@ -89,11 +97,11 @@ class User(UserMixin, db.Model):
 
     def invitable_rooms(self, other_user):
         other_user_rooms = Room.query.join(
-            user_room,
-            (user_room.c.room_id == Room.id)).filter(user_room.c.user_id == other_user.id)
+            UserRoom,
+            (UserRoom.c.room_id == Room.id)).filter(UserRoom.c.user_id == other_user.id)
         own_user_rooms = Room.query.join(
-            user_room,
-            (user_room.c.room_id == Room.id)).filter(user_room.c.user_id == self.id)
+            UserRoom,
+            (UserRoom.c.room_id == Room.id)).filter(UserRoom.c.user_id == self.id)
         result = own_user_rooms.except_(other_user_rooms)
         return result
 
@@ -104,13 +112,17 @@ class User(UserMixin, db.Model):
 
 class Room(db.Model):
     __tablename__ = 'room'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    private = db.Column(db.Boolean, nullable=False)
-    messages = db.relationship('Message', backref='room', lazy='dynamic')
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(64), index=True)
+    private: Mapped[bool] = mapped_column(Boolean)
+    users: Mapped[list['User']] = relationship(
+        secondary=UserRoom,
+        back_populates='rooms')
+    messages: Mapped['Message'] = relationship(
+        backpopulates='room', lazy='dynamic')
 
     def __repr__(self):
-        return '<Room %r>' % self.name
+        return f'Room({self.name})'
 
     def __init__(self, name, private):
         self.name = name
