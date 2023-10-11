@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 
 class Model(DeclarativeBase):
@@ -16,3 +16,4 @@ class Model(DeclarativeBase):
 
 load_dotenv()
 engine = create_engine(os.environ['SQLALCHEMY_DATABASE_URI'])
+Session = sessionmaker(engine)
