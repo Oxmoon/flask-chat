@@ -51,3 +51,13 @@ def sign_up():
         flash('Thank you for signing up!')
         return redirect(url_for('auth.login'))
     return render_template('auth/sign_up.html', title='Sign up', form=form)
+
+
+@bp.before_app_request
+def ensure_general_room():
+    general_room = Room.query.filter_by(name="General").first()
+    if general_room is None:
+        general_room = Room(name="General",
+                            private=False)
+        db.session.add(general_room)
+        db.session.commit()

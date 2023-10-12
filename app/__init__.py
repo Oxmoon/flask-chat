@@ -1,16 +1,14 @@
 from flask import Flask
 from config import config
-from sqlalchemy import MetaData, exc
+from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_utils import database_exists
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_moment import Moment
 from flask_bootstrap import Bootstrap
 from flask_socketio import SocketIO
-import logging
-from logging.handlers import RotatingFileHandler
 import os
+
 
 convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -35,6 +33,11 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
+    #  app.config['SQLALCHEMY_BINDS'] = {
+        #  'development': os.getenv('DEV_DATABASE_URL'),
+        #  'production': os.getenv('DATABASE_URL'),
+    #  }
+
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
@@ -53,33 +56,5 @@ def create_app(config_name):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
-
-    print('database is ' + os.environ['SQLALCHEMY_DATABASE_URI'])
-    if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
-        print("app.db already exists")
-    else:
-        print("app.db does not exist, will create ")
-        with app.app_context():
-            try:
-                db.create_all()
-            except exc.SQLAlchemyError as sqlalchemyerror:
-                print("got the following SQLAlchemyError: " + str(sqlalchemyerror))
-            except Exception as exception:
-                print("got the following Exception: " + str(exception))
-            finally:
-                print("db.create_all() in __init__.py was successfull - no exceptions were raised")
-
-    if not app.debug and not app.testing:
-        if not os.path.exists('logs'):
-            os.mkdir('logs')
-        file_handler = RotatingFileHandler('logs/flask-chat.log', maxBytes=10240,
-                                           backupCount=10)
-        file_handler.setFormatter(logging.Formatter(
-            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-        file_handler.setLevel(logging.INFO)
-        app.logger.addHandler(file_handler)
-
-        app.logger.setLevel(logging.INFO)
-        app.logger.info('Flask-chat startup')
 
     return app
