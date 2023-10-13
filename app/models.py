@@ -2,7 +2,7 @@ from datetime import datetime
 from hashlib import md5
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import login, db
+from .extensions import login, db
 
 
 user_room = db.Table('user_room',
