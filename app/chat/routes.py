@@ -43,6 +43,18 @@ def edit_room(name):
     return render_template('chat/edit_room.html', title='Edit Room', current_room=current_room, form=form)
 
 
+@bp.route('/room/delete/<name>', methods=['GET'])
+@login_required
+def delete_room(name):
+    current_room = Room.query.filter_by(name=name).first_or_404()
+    if not current_room.owner_id == current_user.id:
+        flash('You do not have permission to delete this room.', 'error')
+        return redirect(url_for('chat.room', name=name))
+    db.session.delete(current_room)
+    db.session.commit()
+    return redirect(url_for('main.index'))
+
+
 @socketio.on('user_message')
 def user_message(data):
     room = data['room_id']
