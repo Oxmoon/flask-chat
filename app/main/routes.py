@@ -65,7 +65,7 @@ def edit_profile():
 def create_room():
     form = CreateRoomForm()
     if form.validate_on_submit():
-        room = Room(name=form.name.data, private=form.private.data)
+        room = Room(name=form.name.data, private=form.private.data, owner_id=current_user.id)
         db.session.add(room)
         current_user.join(room)
         db.session.commit()
