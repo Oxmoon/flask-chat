@@ -10,8 +10,10 @@
     {% endif %}
 </div>
 {% if user == current_user %}
-<a class="btn btn-primary glyphicon glyphicon-edit" href={{ url_for('main.edit_profile') }}> Edit</a>
+<a class="btn btn-primary" href={{ url_for('main.edit_profile') }}>
+    <span class="glyphicon glyphicon-edit"></span> Edit</a>
 {% else %}
-<a class="btn btn-primary glyphicon glyphicon-plus" href={{ url_for('main.invite_room', username=user.username) }}> Invite</a>
+<a class="btn btn-primary" href={{ url_for('main.invite_room', username=user.username) }}>
+    <span class="glyphicon glyphicon-plus"></span> Invite</a>
 {% endif %}
 {% endblock %}
