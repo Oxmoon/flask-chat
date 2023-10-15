@@ -108,10 +108,12 @@ class Room(db.Model):
     name = db.Column(db.String, nullable=False)
     private = db.Column(db.Boolean, nullable=False)
     messages = db.relationship('Message', backref='room', lazy='dynamic')
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
     def __repr__(self):
         return '<Room %r>' % self.name
 
-    def __init__(self, name, private):
+    def __init__(self, name, private, owner_id=None):
         self.name = name
         self.private = private
+        self.owner_id = owner_id
