@@ -2,7 +2,14 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block title %}{{ room.name }}{% endblock %}
 {% block app_content %}
+{% if current_user.id == room.owner_id %}
+<div class="h1 p-3" align="center">
+    {{ room.name }}
+    <a class="btn btn-primary glyphicon glyphicon-edit" href={{ url_for('chat.edit_room', name=room.name) }}> Edit</a>
+</div>
+{% else %}
 <div class="h1 p-3" align="center">{{ room.name }}</div>
+{% endif %}
 <div class="container-fluid border border-dark-subtle border-bottom-0 rounded">
     <div id="messages_div">
         <ul id="user_messages_list" class="list-group">

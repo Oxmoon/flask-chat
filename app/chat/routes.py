@@ -1,11 +1,10 @@
 from app import db, socketio
 from app.chat import bp
-from app.models import User, Room, Message
-from app.chat.forms import ChatForm
-from werkzeug.urls import url_parse
+from app.models import Room, Message
+from app.chat.forms import EditRoomForm
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_required
-from flask_socketio import join_room, leave_room, send, emit
+from flask_socketio import join_room, leave_room, send
 
 
 @bp.route('/room/<name>', methods=['GET', 'POST'])
@@ -22,6 +21,26 @@ def room(name):
                            roomname=room.name,
                            room_id=room.id,
                            messages=room.messages)
+
+
+@bp.route('/room/edit_room/<name>', methods=['GET', 'POST'])
+@login_required
+def edit_room(name):
+    current_room = Room.query.filter_by(name=name).first_or_404()
+    form = EditRoomForm(current_room.name)
+    if not current_room.owner_id == current_user.id:
+        flash('You do not have permission to edit this room.', 'error')
+        return redirect(url_for('chat.room', name=name))
+    if form.validate_on_submit():
+        current_room.name = form.name.data
+        current_room.private = form.private.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('chat.room', name=form.name.data))
+    elif request.method == 'GET':
+        form.name.data = current_room.name
+        form.private.data = current_room.private
+    return render_template('chat/edit_room.html', title='Edit Room', current_room=current_room, form=form)
 
 
 @socketio.on('user_message')

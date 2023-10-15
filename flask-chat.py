@@ -13,7 +13,8 @@ with app.app_context():
     general_room = Room.query.filter_by(name="General").first()
     if general_room is None:
         general_room = Room(name="General",
-                            private=False)
+                            private=False,
+                            owner_id=None)
         db.session.add(general_room)
         db.session.commit()
 
