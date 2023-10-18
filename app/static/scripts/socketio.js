@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    var socket = io();
+    var socket = io.connect('http://127.0.0.1:5000');
     let message_list = document.getElementById('user_messages_list');
     message_list.scrollIntoView(false);
     let client_window = document.getElementById('messages_div')
@@ -74,14 +74,4 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#user_message').innerHTML = '';
         document.querySelector("#user_message").focus();
     }
-
-    // function leaveRoom(room_id) {
-        // socket.emit('leave', {'room_id': room_id});
-    // }
-
-    // window.addEventListener('beforeunload', function (e) {
-        // e.preventDefault();
-        // leaveRoom(room_id);
-        // e.returnValue = '';
-    // });
 });
