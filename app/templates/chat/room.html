@@ -2,64 +2,63 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block title %}{{ room.name }}{% endblock %}
 {% block app_content %}
-{% if current_user.id == room.owner_id %}
-<div class="h1 p-3" align="center">
-    {{ room.name }}
-    <a class="btn btn-primary" href={{ url_for('chat.edit_room', name=room.name) }}>
-        <span class="glyphicon glyphicon-edit"></span> Edit</a>
-</div>
-{% else %}
-<div class="h1 p-3" align="center">{{ room.name }}</div>
-{% endif %}
-<div class="container-fluid border border-dark-subtle border-bottom-0 rounded">
-    <div id="messages_div">
-        <ul id="user_messages_list" class="list-group">
-            {% for message in messages %}
-            {% if message.user_id == current_user.id %}
-            <li class="own_message list-group-item d-flex justify-content-between align-items-start p-2 w-100">
-                {% include 'chat/_message.html' %}
-            </li>
-            {% else %}
-            <li class="other_message list-group-item d-flex justify-content-between align-items-start p-2 w-100 bg-light">
-                {% include 'chat/_message.html' %}
-            </li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="container-fluid no_padding">
-        <div class="input-group">
-            <input type="text" id="user_message" class="form-control" placeholder="Message">
-            <span class="input-group-btn">
-                <button class="btn btn-default" id="send_message" type="button">Send</button>
-            </span>
+    {% if current_user.id == room.owner_id %}
+        <div class="h1 p-3" align="center">
+            {{ room.name }}
+            <a class="btn btn-primary" href={{ url_for('chat.edit_room', name=room.name) }}>
+                <span class="glyphicon glyphicon-edit"></span> Edit</a>
+        </div>
+    {% else %}
+        <div class="h1 p-3" align="center">{{ room.name }}</div>
+    {% endif %}
+    <div class="container-fluid border border-dark-subtle border-bottom-0 rounded">
+        <div id="messages_div">
+            <ul id="user_messages_list" class="list-group">
+                {% for message in messages %}
+                    {% if message.user_id == current_user.id %}
+                        <li class="own_message list-group-item d-flex justify-content-between align-items-start p-2 w-100">
+                            {% include 'chat/_message.html' %}
+                        </li>
+                    {% else %}
+                        <li class="other_message list-group-item d-flex justify-content-between align-items-start p-2 w-100 bg-light">
+                            {% include 'chat/_message.html' %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="container-fluid no_padding">
+            <div class="input-group">
+                <input type="text"
+                       id="user_message"
+                       class="form-control"
+                       placeholder="Message">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" id="send_message" type="button">Send</button>
+                </span>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
-
 {% block styles %}
-{{ super() }}
-<link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='styles/chat.css') }}"/>
+    {{ super() }}
+    <link rel="stylesheet"
+          type="text/css"
+          href=" {{ url_for('static', filename='styles/chat.css') }}" />
 {% endblock %}
-
 {% block scripts %}
-{{ super() }}
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
-    integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
-    crossorigin="anonymous"></script>
-
-<script type="text/javascript">
+    {{ super() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
     const username = `{{ username }}`
     const user_id = `{{ user_id }}`
     const roomname = `{{ roomname }}`
     const room_id = `{{ room_id }}`
     const avatar_url = `{{ avatar_url }}`
-</script>
-
-<script src="https://momentjs.com/downloads/moment.js"></script>
-<script src="{{ url_for('static', filename='scripts/chat.js' )}}"></script>
-<script src="{{ url_for('static', filename='scripts/socketio.js')}}"></script>
-
+    </script>
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script src="{{ url_for('static', filename='scripts/chat.js' )}}"></script>
+    <script src="{{ url_for('static', filename='scripts/socketio.js')}}"></script>
 {% endblock %}

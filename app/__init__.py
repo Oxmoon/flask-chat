@@ -1,13 +1,8 @@
 from flask import Flask
+
 from config import config
-from .extensions import (
-    db,
-    migrate,
-    moment,
-    login,
-    bootstrap,
-    socketio,
-)
+
+from .extensions import bootstrap, db, login, migrate, moment, socketio
 
 
 def create_app(config_name):
@@ -23,15 +18,19 @@ def create_app(config_name):
     socketio.init_app(app)
 
     from app.errors import bp as errors_bp
-    app.register_blueprint(errors_bp, url_prefix='/errors')
+
+    app.register_blueprint(errors_bp, url_prefix="/errors")
 
     from app.auth import bp as auth_bp
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    app.register_blueprint(auth_bp, url_prefix="/auth")
 
     from app.chat import bp as chat_bp
-    app.register_blueprint(chat_bp, url_prefix='/chat')
+
+    app.register_blueprint(chat_bp, url_prefix="/chat")
 
     from app.main import bp as main_bp
+
     app.register_blueprint(main_bp)
 
     return app

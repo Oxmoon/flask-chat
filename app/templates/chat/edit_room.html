@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% block title %}Edit {{ current_room.name}}{% endblock %}
+{% block title %}Edit {{ current_room.name }}{% endblock %}
 {% block app_content %}
-<div class="h3 p-3">
-    Edit Room
-    <a class="btn btn-danger " href={{ url_for('chat.delete_room', name=current_room.name) }}>
-        <span class="glyphicon glyphicon-trash"></span> Delete</a>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        {{ wtf.quick_form(form) }}
+    <div class="h3 p-3">
+        Edit Room
+        <a class="btn btn-danger " href={{ url_for('chat.delete_room', name=current_room.name) }}>
+            <span class="glyphicon glyphicon-trash"></span> Delete</a>
     </div>
-</div>
+    <div class="row">
+        <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
+    </div>
 {% endblock %}

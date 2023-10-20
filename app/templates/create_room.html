@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-
 {% block title %}Create Room{% endblock %}
 {% block app_content %}
-<div class="h3 p-3" align="center">Create Room</div>
-<div class="row">
-    <div class="col-md-4">
-        {{ wtf.quick_form(form) }}
+    <div class="h3 p-3" align="center">Create Room</div>
+    <div class="row">
+        <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
     </div>
-</div>
 {% endblock %}

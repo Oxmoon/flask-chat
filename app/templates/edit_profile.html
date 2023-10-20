@@ -2,10 +2,8 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block title %}{{ current_user.username }}'s Profile{% endblock %}
 {% block app_content %}
-<div class="h3 p-3">Edit Profile</div>
-<div class="row">
-    <div class="col-md-4">
-        {{ wtf.quick_form(form) }}
+    <div class="h3 p-3">Edit Profile</div>
+    <div class="row">
+        <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
     </div>
-</div>
 {% endblock %}

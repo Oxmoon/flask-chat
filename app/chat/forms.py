@@ -1,18 +1,19 @@
 from flask_wtf import FlaskForm
-from app.models import Room
-from wtforms import StringField, SubmitField, BooleanField
+from wtforms import BooleanField, StringField, SubmitField
 from wtforms.validators import DataRequired, ValidationError
+
+from app.models import Room
 
 
 class ChatForm(FlaskForm):
-    message = StringField('Message', validators=[DataRequired()])
-    submit = SubmitField('Send')
+    message = StringField("Message", validators=[DataRequired()])
+    submit = SubmitField("Send")
 
 
 class EditRoomForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    private = BooleanField('Private')
-    submit = SubmitField('Send')
+    name = StringField("Name", validators=[DataRequired()])
+    private = BooleanField("Private")
+    submit = SubmitField("Send")
 
     def __init__(self, original_name, *args, **kwargs):
         super(EditRoomForm, self).__init__(*args, **kwargs)
@@ -22,4 +23,4 @@ class EditRoomForm(FlaskForm):
         if name.data != self.original_name:
             room = Room.query.filter_by(name=self.name.data).first()
             if room is not None:
-                raise ValidationError('Room name is already taken.')
+                raise ValidationError("Room name is already taken.")

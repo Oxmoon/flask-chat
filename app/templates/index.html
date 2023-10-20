@@ -1,26 +1,28 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block app_content %}
-<div class="list-group" id="rooms">
-    <div class="h3 p-3" align="center">Public Rooms</div>
-    {% for room in rooms %}
-    {% if not room.private %}
-    <a class="list-group-item list-group-item-action"
-        id="room"
-        href="{{ url_for('chat.room', name=room.name) }}">{{ room.name }}</a>
-    {% endif %} {% endfor %}
-    <div class="h3 p-3" align="center">Private Rooms</div>
-    {% for room in rooms %}
-    {% if room.private %}
-    <a class="list-group-item list-group-item-action"
-        id="room"
-        href="{{ url_for('chat.room', name=room.name) }}">{{ room.name }}</a>
-    {% endif %} {% endfor %}
-</div>
-<br />
-<form action="{{ url_for('main.create_room') }}">
-    <div align="center">
-        <button class="btn btn-primary">Create New Room</button>
+    <div class="list-group" id="rooms">
+        <div class="h3 p-3" align="center">Public Rooms</div>
+        {% for room in rooms %}
+            {% if not room.private %}
+                <a class="list-group-item list-group-item-action"
+                   id="room"
+                   href="{{ url_for('chat.room', name=room.name) }}">{{ room.name }}</a>
+            {% endif %}
+        {% endfor %}
+        <div class="h3 p-3" align="center">Private Rooms</div>
+        {% for room in rooms %}
+            {% if room.private %}
+                <a class="list-group-item list-group-item-action"
+                   id="room"
+                   href="{{ url_for('chat.room', name=room.name) }}">{{ room.name }}</a>
+            {% endif %}
+        {% endfor %}
     </div>
-</form>
+    <br />
+    <form action="{{ url_for("main.create_room") }}">
+        <div align="center">
+            <button class="btn btn-primary">Create New Room</button>
+        </div>
+    </form>
 {% endblock %}
