@@ -21,4 +21,4 @@ moment = Moment()
 login = LoginManager()
 login.login_view = "auth.login"
 bootstrap = Bootstrap()
-socketio = SocketIO(cors_allowed_origins=["http://127.0.0.1:5000"])
+socketio = SocketIO(manage_session=False)
