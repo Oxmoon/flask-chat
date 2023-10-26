@@ -21,4 +21,4 @@ moment = Moment()
 login = LoginManager()
 login.login_view = "auth.login"
 bootstrap = Bootstrap()
-socketio = SocketIO(manage_session=False)
+socketio = SocketIO(manage_session=False, async_mode="gevent", cors_allowed_origins="*")

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    var socket = io.connect('http://127.0.0.1:5000');
+    const socket = io();
     let message_list = document.getElementById('user_messages_list');
     message_list.scrollIntoView(false);
     let client_window = document.getElementById('messages_div');
@@ -70,6 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
             message_list.scrollIntoView(false);
         }
         console.log('recieved message');
+    });
+
+    socket.on('connect_error', (err) => {
+        console.log(`connect_error due to ${err.message}`);
     });
 
     document.querySelector('#send_message').onclick = () => {
