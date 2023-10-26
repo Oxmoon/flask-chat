@@ -1,6 +1,6 @@
 import os
 
-from flask_migrate import Migrate, upgrade
+from flask_migrate import Migrate
 
 from app import create_app, db
 from app.models import Message, Room, User, user_room
@@ -31,4 +31,14 @@ def test():
 
 @app.cli.command()
 def deploy():
-    upgrade()
+    print("deploy was called!")
+    db.create_all()
+    print("db created")
+    # ensure general room is created
+    general_room = Room.query.filter_by(name="General").first()
+    print(general_room)
+    if general_room is None:
+        print("no General room")
+        general_room = Room(name="General", private=False, owner_id=None)
+        db.session.add(general_room)
+        db.session.commit()
