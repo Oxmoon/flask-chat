@@ -8,6 +8,6 @@ logs/
 /app.db
 .flaskenv
 .env
-Dockerfile
+*.Dockerfile
 docker-compose.yaml
 compose-dev.yaml
