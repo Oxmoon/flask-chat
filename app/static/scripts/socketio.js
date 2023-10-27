@@ -38,7 +38,7 @@ const createMessage = (message, name, time, avatar_url, id) => {
 
     msgHeader.setAttribute(
         'class',
-        'fw-bold d-flex justify-content-between p-2 w-100'
+        'header fw-bold d-flex justify-content-between p-2 w-100'
     );
 
     img_avatar.setAttribute('src', avatar_url);

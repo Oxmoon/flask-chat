@@ -1,36 +1,41 @@
 .user_avatar {
-  width: 50px;
-  height: 50px;
+    width: 50px;
+    height: 50px;
 }
 
 #messages_div {
-  overflow-y: auto;
-  max-height: 60vh;
-  min-height: 60vh;
+    overflow-y: auto;
+    max-height: 60vh;
+    min-height: 60vh;
+    background-color: #f7f4e9;
 }
 
 #user_messages_list {
-  margin: 0px;
-  padding: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 .own_message {
-  background-color: #add8e6;
+    background-color: #add8e6;
+}
+
+.header * {
+    margin-right: 3px;
 }
 
 .other_message {
-  background-color: #90ee90;
+    background-color: #90ee90;
 }
 
 .own_message .other_message {
-  word-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .avatar {
-  width: 50px;
-  height: 50px;
+    width: 50px;
+    height: 50px;
 }
 
 .no_padding {
-  padding: 0px;
+    padding: 0px;
 }
