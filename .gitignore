@@ -11,3 +11,4 @@ logs/
 *.Dockerfile
 docker-compose.yaml
 compose-dev.yaml
+init.sql
