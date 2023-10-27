@@ -30,3 +30,7 @@ class CreateRoomForm(FlaskForm):
         room = Room.query.filter_by(name=self.name.data).first()
         if room is not None:
             raise ValidationError("Room name is already taken.")
+
+
+class EmptyForm(FlaskForm):
+    submit = SubmitField("Submit")

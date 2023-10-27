@@ -20,13 +20,14 @@ class Message(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     username = db.Column(db.String(150))
     avatar = db.Column(db.String(150))
+    archive = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     room_id = db.Column(db.Integer, db.ForeignKey("room.id"))
 
     def __repr__(self):
         return "<Message from %r in %r>" % self.user_id % self.room_id
 
-    def __init__(self, msg, user_id, room_id, username, avatar):
+    def __init__(self, msg, user_id, room_id, username):
         self.msg = msg
         self.user_id = user_id
         self.room_id = room_id
@@ -36,6 +37,11 @@ class Message(db.Model):
     def get_avatar(self, user_id):
         user = User.query.filter_by(id=user_id).first()
         return user.get_avatar(50)
+
+    def archive_message(self, user):
+        if int(user) != self.user_id:
+            return
+        self.archive = True
 
 
 class User(UserMixin, db.Model):

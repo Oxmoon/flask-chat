@@ -1,12 +1,14 @@
-<div class="p-2 w-100">
+<div class="p-2 w-100" id="message_id_{{message.id}}">
     <div class="fw-bold d-flex justify-content-between p-2 w-100">
         <img src="{{ message.avatar }}">
         <a href={{ url_for('main.user', username=message.username) }}><strong>{{ message.username }}</strong></a></span>
         <span class="align-items-center">
             <span>{{ moment(message.timestamp).calendar() }}</span>
-            <!-- <button type="button" class="close" onClick="deleteMessage({{ message.id }})"> -->
-                <!-- <span aria-hidden="true">&times;</span> -->
-            <!-- </button> -->
+            {% if message.user_id == current_user.id %}
+            <button type="button" class="close" onclick="deleteMessage({{ message.id }})">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {% endif %}
         </span>
     </div>
     {{ message.msg }}

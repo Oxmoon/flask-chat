@@ -1,6 +1,6 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from flask_socketio import join_room, leave_room, send
+from flask_socketio import emit, join_room, leave_room, send
 
 from app import db, socketio
 from app.chat import bp
@@ -60,6 +60,23 @@ def delete_room(name):
     return redirect(url_for("main.index"))
 
 
+@socketio.on("delete_message")
+def delete_message(data):
+    room = data["room_id"]
+    message = Message.query.filter_by(id=data["message_id"]).first()
+    if not message is None:
+        message.archive_message(data["user_id"])
+        db.session.add(message)
+        db.session.commit()
+        emit(
+            "delete_message",
+            {
+                "message_id": data["message_id"],
+            },
+            room=room,
+        )
+
+
 @socketio.on("user_message")
 def user_message(data):
     room = data["room_id"]
@@ -67,17 +84,19 @@ def user_message(data):
         msg=data["msg"],
         user_id=data["user_id"],
         room_id=data["room_id"],
-        avatar=data["avatar_url"],
+        # avatar=data["avatar_url"],
         username=data["username"],
     )
     db.session.add(message)
     db.session.commit()
-    send(
+    emit(
+        "user_message",
         {
             "msg": message.msg,
             "username": message.username,
             "timestamp": str(message.timestamp),
             "avatar_url": message.avatar,
+            "id": message.id,
         },
         room=room,
     )

@@ -30,6 +30,20 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 
 
+class LocalDevelopmentConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get("LOCAL_DEV_DATABASE_URL")
+
+
+class LocalTestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get("LOCAL_TEST_DATABASE_URL")
+
+
+class LocalProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.environ.get("LOCAL_DATABASE_URL")
+
+
 class DockerConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
@@ -49,5 +63,8 @@ config = {
     "testing": TestingConfig,
     "production": ProductionConfig,
     "docker": DockerConfig,
-    "default": DevelopmentConfig,
+    "default": LocalDevelopmentConfig,
+    "local_development": LocalDevelopmentConfig,
+    "local_testing": LocalTestingConfig,
+    "local_production": LocalProductionConfig,
 }
