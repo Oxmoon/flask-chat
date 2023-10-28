@@ -7,7 +7,7 @@ from app.models import Room, User
 
 class EditProfileForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
-    about_me = TextAreaField("About me", validators=[Length(min=0, max=140)])
+    about_me = TextAreaField("About me", validators=[Length(min=0, max=350)])
     submit = SubmitField("Submit")
 
     def __init__(self, original_username, *args, **kwargs):
@@ -30,7 +30,3 @@ class CreateRoomForm(FlaskForm):
         room = Room.query.filter_by(name=self.name.data).first()
         if room is not None:
             raise ValidationError("Room name is already taken.")
-
-
-class EmptyForm(FlaskForm):
-    submit = SubmitField("Submit")
