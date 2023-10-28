@@ -7,12 +7,31 @@
     overflow-y: auto;
     max-height: 60vh;
     min-height: 60vh;
-    background-color: #f7f4e9;
 }
 
 #user_messages_list {
     margin: 0px;
     padding: 0px;
+}
+
+#user_message {
+    border-radius: 0px 0px 0px 5px;
+}
+
+#send_message {
+    border-radius: 0px 0px 5px 0px;
+}
+
+.h1 {
+    color: darkslategrey;
+}
+
+.text_container {
+    border-radius: 5px;
+    margin: 0px;
+    box-shadow:
+        0 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .own_message {

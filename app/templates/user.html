@@ -1,20 +1,33 @@
 {% extends "base.html" %}
 {% block title %}{{ user.username }}'s Profile{% endblock %}
 {% block app_content %}
-    <div class="h3 p-3">User: {{ user.username }}</div>
-    <img src="{{ user.get_avatar(128) }}">
-    <div class="p-3">
-        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-        {% if user.last_seen %}
-            <p>
-                Last seen: {{ moment(user.last_seen).fromNow() }}
-            {% endif %}
+    <div id="container">
+        <img src="{{ user.get_avatar(400) }}">
+        <div id="right_side">
+            <div id="title_wrapper">
+                <div id="name">
+                    <p>{{ user.username }}</p>
+                </div>
+                <div id="last_seen">
+                    {% if user.last_seen %}<p>Last seen: {{ moment(user.last_seen).fromNow() }}</p>{% endif %}
+                </div>
+            </div>
+            <div id="about_me">
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+            </div>
         </div>
-        {% if user == current_user %}
-            <a class="btn btn-primary" href={{ url_for("main.edit_profile") }}>
-                <span class="glyphicon glyphicon-edit"></span> Edit</a>
-        {% else %}
-            <a class="btn btn-primary" href={{ url_for('main.invite_room', username=user.username) }}>
-                <span class="glyphicon glyphicon-plus"></span> Invite</a>
-        {% endif %}
-    {% endblock %}
+    </div>
+    {% if user == current_user %}
+        <a class="btn btn-primary" href={{ url_for("main.edit_profile") }}>
+            <span class="glyphicon glyphicon-edit"></span> Edit</a>
+    {% else %}
+        <a class="btn btn-primary" href={{ url_for('main.invite_room', username=user.username) }}>
+            <span class="glyphicon glyphicon-plus"></span> Invite</a>
+    {% endif %}
+{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet"
+          type="text/css"
+          href=" {{ url_for('static', filename='styles/user.css') }}" />
+{% endblock %}

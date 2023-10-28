@@ -1,0 +1,116 @@
+#container {
+    display: flex;
+    border-radius: 5px;
+    padding: 5px;
+    min-height: 200px;
+    margin-bottom: 10px;
+    background-color: #8ac7db;
+    box-shadow:
+        0 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+img {
+    flex-grow: 1;
+    height: 200px;
+    width: 200px;
+    border-radius: 5px;
+}
+
+#right_side {
+    height: 200px;
+    flex-grow: 3;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+#title_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    height: 50px;
+    width: 100%;
+}
+
+#name {
+    flex-grow: 1;
+    margin-left: 10px;
+    margin: 10px;
+    align-items: center;
+    justify-content: left;
+}
+
+#name p {
+    text-align: left;
+    font-size: 30px;
+    vertical-align: center;
+    color: white;
+    height: auto;
+}
+
+#last_seen {
+    align-items: center;
+    justify-content: right;
+    padding: 10px;
+    flex-grow: 1;
+}
+
+#last_seen p {
+    height: auto;
+    text-align: right;
+    font-size: 15px;
+    vertical-align: center;
+    color: white;
+    text-decoration: underline;
+}
+
+#about_me {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    position: relative;
+}
+
+#about_me p {
+    font-size: 20px;
+    color: darkslategrey;
+}
+
+@media (max-width: 500px) {
+    img {
+        flex-grow: 1;
+        height: 100px;
+        width: 100px;
+        border-radius: 5px;
+    }
+    #about_me p {
+        margin-top: 20px;
+        font-size: 14px;
+        color: darkslategrey;
+    }
+    #name p {
+        text-align: center;
+        font-size: 25px;
+        vertical-align: center;
+        height: auto;
+    }
+    #last_seen p {
+        text-align: right;
+        font-size: 10px;
+        vertical-align: center;
+        color: white;
+        text-decoration: underline;
+    }
+    #container {
+        display: flex;
+        border-radius: 5px;
+        padding: 5px;
+        min-height: 350px;
+        margin-bottom: 10px;
+        background-color: #8ac7db;
+        box-shadow:
+            0 4px 8px 0 rgba(0, 0, 0, 0.2),
+            0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+}
