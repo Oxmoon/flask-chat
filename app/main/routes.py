@@ -14,7 +14,10 @@ from app.models import Room, User
 @login_required
 def index():
     rooms = current_user.joined_rooms()
-    return render_template("index.html", rooms=rooms)
+    number_of_private_rooms = current_user.number_of_private_rooms()
+    return render_template(
+        "index.html", rooms=rooms, number_of_private_rooms=number_of_private_rooms
+    )
 
 
 @bp.route("/user/<username>")
@@ -39,14 +42,6 @@ def invite_room(username):
     return render_template(
         "invite_room.html", title="Invite to Room", user=user, rooms=rooms
     )
-
-
-@bp.route("/user/<username>/popup")
-@login_required
-def user_popup(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    form = EmptyForm()
-    return render_template("user_popup.html", user=user, form=form)
 
 
 @bp.before_request
