@@ -57,7 +57,7 @@ class User(UserMixin, db.Model):
         backref=db.backref("user", lazy="dynamic"),
         lazy="dynamic",
     )
-    about_me = db.Column(db.String(140))
+    about_me = db.Column(db.String(350))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -95,6 +95,14 @@ class User(UserMixin, db.Model):
             user_room.c.user_id == self.id
         )
         return joined
+
+    def number_of_private_rooms(self):
+        joined = self.joined_rooms()
+        count = 0
+        for room in joined:
+            if room.private == True:
+                count += 1
+        return count
 
     def get_profile(self):
         return "/user/" + self.username
