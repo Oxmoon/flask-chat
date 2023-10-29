@@ -1,11 +1,17 @@
 #!/bin/bash
 if docker volume ls | grep -q "flask-chat_db-data"; then
-    read -p "This will erase all flask-chat db data. Are you sure?[Y/y] " -n 1 -r
+    read -p "This will erase all flask-chat db volume data. Are you sure?[Y/y] " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        docker volume rm flask-chat_db-data
+        if message=$(docker volume rm flask-chat_db-data) ; then
+            echo "Removed ${message}"
+        else
+            echo "Please close the container using this volume and try again. 'docker-compose down'"
+            exit
+        fi
     fi
 fi
+echo "Creating init.sql..."
 source ./.env
 cat <<EOF > init.sql
 CREATE USER ${PRO_USER} WITH PASSWORD '${PRO_PASSWORD}';
@@ -34,3 +40,4 @@ GRANT ALL ON SCHEMA public TO ${DEV_USER};
 GRANT ALL ON SCHEMA public TO ${TEST_USER};
 EOF
 chmod +x ./init.sql
+echo "Ready to launch with 'docker-compose up -d --build'"
