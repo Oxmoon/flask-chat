@@ -9,7 +9,7 @@ A live chatting site example using:
 
 ## Installation
 
-###Unix/macOS
+### Unix/macOS
 To run this app in a docker container your machine will require Docker, Git, and Python3.11, virtualenv, and  available on the commandline.
 
 If you have python3 installed but not virtualenv, you can install it with: `python3 -m pip install --user virtualenv`
