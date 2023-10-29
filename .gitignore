@@ -7,8 +7,5 @@ logs/
 /command.txt
 /app.db
 .flaskenv
-.env
-*.Dockerfile
-docker-compose.yaml
 compose-dev.yaml
 init.sql
