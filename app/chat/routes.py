@@ -1,6 +1,6 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from flask_socketio import emit, join_room, leave_room, send
+from flask_socketio import emit, join_room, leave_room
 
 from app import db, socketio
 from app.chat import bp
